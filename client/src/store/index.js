@@ -6,7 +6,9 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         sessions: [],
-        apiUrl: 'http://localhost:5000/api/v1/',
+        apiUrl: 'http://localhost:5000/api/v1',
+        currentSession: {},
+        accountExists: false,
     },
     mutations: {
         set(state, payload) {
@@ -36,7 +38,7 @@ export default new Vuex.Store({
                 avgLap: form.avgLap,
             }
             commit('addSesh', tempSesh);
-            var path = `${this.state.apiUrl}add-session`
+            var path = `${this.state.apiUrl}/add-session`
                 // var bodyFormData = new FormData();
                 // bodyFormData.append('form', this.state.sessions);
             axios.post(path, { form: this.state.sessions })
@@ -48,6 +50,21 @@ export default new Vuex.Store({
                     console.log(error);
                 });
         },
+        async checkForAccount({ commit, dispatch }) {
+            var path = `${this.state.apiUrl}/index`
+            axios.get(path)
+                .then(function(response) {
+                    console.log(response);
+                    if (response.data.success) {
+                        commit('set', ['accountExists', true]);
+                    }
+                    return accountExists;
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+
+        }
     },
     modules: {}
 })

@@ -10,7 +10,7 @@
 <script>
 import TimerComponent from '../components/timer/timer-component.vue';
 export default {
-  name: "App",
+  name: "Timer",
   components: {
     TimerComponent,
   },

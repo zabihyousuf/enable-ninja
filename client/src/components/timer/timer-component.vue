@@ -100,6 +100,7 @@ export default {
       averageLap: "00:00.000",
       lapNumber: 1,
       previousLap: 1,
+      timeElapsed: 0,
     };
   },
   methods: {
@@ -126,7 +127,6 @@ export default {
     },
     reset(calledFrom) {
       if (calledFrom === "end") {
-        
         this.$store.dispatch("addSession", {
           laps: this.laps,
           fastestLap: this.fastestLap,
@@ -151,13 +151,14 @@ export default {
       }
     },
     clockRunning() {
-      var currentTime = new Date(),
-        timeElapsed = new Date(
-          currentTime - this.timeBegan - this.stoppedDuration
-        ),
-        min = timeElapsed.getUTCMinutes(),
-        sec = timeElapsed.getUTCSeconds(),
-        ms = timeElapsed.getUTCMilliseconds();
+      
+      var currentTime = new Date();
+      this.timeElapsed = new Date(
+        currentTime - this.timeBegan - this.stoppedDuration
+      );
+      var min = this.timeElapsed.getUTCMinutes();
+      var sec = this.timeElapsed.getUTCSeconds();
+      var ms = this.timeElapsed.getUTCMilliseconds();
 
       this.time =
         this.zeroPrefix(min, 2) +
@@ -174,6 +175,7 @@ export default {
       return (zero + num).slice(-digit);
     },
     lap() {
+      
       const tempDate = new Date(
         new Date() - this.timeBegan - this.stoppedDuration
       ).getTime();
@@ -181,15 +183,15 @@ export default {
       this.laps.push({
         time: this.time,
         lap: this.lapNumber,
-        timeDiff: tempDate,
+        timeDiff: this.timeElapsed.getTime(),
       });
       this.lapNumber++;
       this.latestLap = this.time;
-      this.calculateAverage();
+      this.calcAvgAndFastest();
       this.reset("lap");
       this.start();
     },
-    calculateAverage() {
+    calcAvgAndFastest() {
       var totalTime = 0;
       for (var i = 0; i < this.laps.length; i++) {
         totalTime += this.laps[i].timeDiff;

@@ -1,0 +1,7 @@
+- qr code tie device to user
+    - they can use a qr code which will have an id tied to the device 
+    - when they scan the code they will then make an account 
+    - how will the app know who is logged in?
+        - each device will have a file to let them know what is the device id
+        - when we make the qr codes, they will be generated from those files and then the link will be associated with the device id
+        - it would only be in the db table if its associated with an account
