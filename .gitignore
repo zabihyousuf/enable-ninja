@@ -11,6 +11,11 @@ env
 .node_modules
 node_modules
 
+.device_config
+device_config
+
+logs
+
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
