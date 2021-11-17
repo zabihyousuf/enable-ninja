@@ -7,9 +7,19 @@ body {}
 #bg {
     background-color: rgb(10, 10, 10) !important;
     font-family: 'Share Tech Mono', monospace;
+    letter-spacing: 1px;
     padding: 0;
     margin: 0;
     background-color: #0A0B0B;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+#app_text {
+    letter-spacing: 4px;
+    text-transform: uppercase;
 }
 
 #clock {
@@ -19,11 +29,11 @@ body {}
     color: $color;
     //text-shadow: 0px 0px 25px $color;
     .time {
-        font-size: 15em;
+        font-size: 25em;
     }
     .text {
         margin-top: 30px;
-        font-size: 9em;
+        font-size: 12em;
         color: rgba($color, .15);
         text-align: center;
         a {

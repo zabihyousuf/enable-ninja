@@ -1,33 +1,31 @@
 <template>
-  <v-row  justify="center">
-    <v-col cols="8">
-      <v-container fill-height>
-        <v-row></v-row>
-        <v-row></v-row>
-        <v-row></v-row>
-        <v-row class="mb-n9">
-          <v-card-title style="font-size: 72px; color: white"
-            >SELECT TRACK</v-card-title
-          >
-        </v-row>
-        <v-row class="mt-n9" justify="center">
-          <v-select
-            v-model="selectedTrack"
-            @change="goToTimer()"
-            :items="items"
-            item-text="trackName"
-            item-value="id"
-            solo
-            outlined
-            return-object
-            label="CHOOSE A PRESAVED TRACK"
-          ></v-select>
-        </v-row>
-        <v-row></v-row>
-        <v-row></v-row>
-        <v-row></v-row>
-      </v-container>
-    </v-col>
+  <v-row justify="center">
+    <v-container fill-height fill-width>
+      <v-row></v-row>
+      <v-row></v-row>
+      <v-row></v-row>
+      <v-row class="mb-n9">
+        <v-card-title style="font-size: 72px; color: white"
+          >SELECT TRACK</v-card-title
+        >
+      </v-row>
+      <v-row class="mt-n9" justify="center">
+        <v-select
+          v-model="selectedTrack"
+          @change="goToTimer()"
+          :items="items"
+          item-text="trackName"
+          item-value="id"
+          solo
+          outlined
+          return-object
+          label="CHOOSE A PRESAVED TRACK"
+        ></v-select>
+      </v-row>
+      <v-row></v-row>
+      <v-row></v-row>
+      <v-row></v-row>
+    </v-container>
   </v-row>
 </template>
 <script>

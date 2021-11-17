@@ -1,45 +1,45 @@
 <template>
   <v-row id="bg">
-
     <v-col>
       <!-- back button that will go back to the page it came from  -->
-      <v-btn x-large icon @click="$router.go(-1)">
-        <v-icon color="white">mdi-arrow-left</v-icon>
+      <v-btn class="pl-9" x-large icon @click="$router.go(-1)">
+        <v-icon color="white">mdi-arrow-left</v-icon> <v-card-title class="ml-n3" style="color:white">Back</v-card-title>
       </v-btn>
     </v-col>
     <v-col cols="8">
       <v-container fill-height fluid id="bg">
         <div id="clock">
           <v-row class="mb-n9" justify="center">
-            <v-spacer></v-spacer>
-            <div class="mt-9">
-              <v-card-title style="font-size: 18px">Fastest Lap</v-card-title>
-              <v-card-text style="font-size: 24px"
+            <div class="mt-9 mr-9">
+              <v-card-title id="app_text" class="mt-9 mb-9" style="font-size: 42px">Fastest Lap</v-card-title>
+              <v-card-text style="font-size: 54px"
                 ><strong>{{ fastestLap }}</strong></v-card-text
               >
             </div>
             <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
             <div>
-              <span style="font-size: 24px">Lap </span
-              ><span style="font-size: 6em">
+              <span id="app_text"  style="font-size: 42px">Lap </span
+              ><span style="font-size: 9em">
                 <strong>{{ lapNumber }}</strong></span
               >
             </div>
             <v-spacer></v-spacer>
-            <div class="mt-9">
-              <v-card-title style="font-size: 18px">Average Lap</v-card-title>
-              <v-card-text style="font-size: 24px"
+            <v-spacer></v-spacer>
+            <div class="mt-9 ml-9">
+              <v-card-title id="app_text"  class="mt-9 mb-9" style="font-size: 42px">Average Lap</v-card-title>
+              <v-card-text style="font-size: 54px"
                 ><strong>{{ averageLap }}</strong></v-card-text
               >
             </div>
-            <v-spacer></v-spacer>
           </v-row>
           <span class="time">{{ time }}</span>
 
           <v-row justify="center">
             <v-spacer></v-spacer>
             <v-btn
-              style="font-size: 2em"
+              x-large
+              style="font-size: 4em"
               id="start"
               text
               color="success"
@@ -48,21 +48,23 @@
               >Start Session</v-btn
             >
             <v-spacer></v-spacer>
-            <v-btn
+            <!-- <v-btn
               light
+              x-large
+              style="font-size: 4em"
               v-if="running"
-              style="font-size: 2em"
               id="stop"
               text
               class="white--text"
               @click="lap()"
               >Lap</v-btn
-            >
+            > -->
 
             <v-spacer v-if="running"></v-spacer>
             <v-btn
               v-if="running"
-              style="font-size: 2em"
+              x-large
+              style="font-size: 4em"
               id="reset"
               color="error"
               text
@@ -74,6 +76,14 @@
           </v-row>
         </div> </v-container
     ></v-col>
+    <v-col> </v-col>
+    <v-col> </v-col>
+    <v-col> </v-col>
+    <v-col> </v-col>
+    <v-col> </v-col>
+    <v-col> </v-col>  
+    <v-col> </v-col>
+    <v-col> </v-col>
     <v-col> </v-col>
   </v-row>
 </template>
@@ -153,7 +163,6 @@ export default {
       }
     },
     clockRunning() {
-      
       var currentTime = new Date();
       this.timeElapsed = new Date(
         currentTime - this.timeBegan - this.stoppedDuration
@@ -177,7 +186,6 @@ export default {
       return (zero + num).slice(-digit);
     },
     lap() {
-      
       const tempDate = new Date(
         new Date() - this.timeBegan - this.stoppedDuration
       ).getTime();
