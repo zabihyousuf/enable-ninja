@@ -9,10 +9,10 @@ from pathlib import Path
 import uuid
 
 app = Flask(__name__)
-db = pymysql.connect(host='localhost',
-                     user='root',
-                     password='Jubilant9828!',
-                     db='enable_ninja_local')
+# db = pymysql.connect(host='localhost',
+#                      user='root',
+#                      password='Jubilant9828!',
+#                      db='enable_ninja_local')
 
 app = Flask(__name__)
 app.config.from_object(__name__)
