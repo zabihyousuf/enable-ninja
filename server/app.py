@@ -18,6 +18,7 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 deviceID = 0
 apiUrl = "/api/v1/"
+deviceUrl = "../device_config/device_config.txt"
 # enable CORS
 CORS(app, resources={r"/*": {"origins": "*"}})
 
@@ -32,30 +33,31 @@ def index():
         try:
             # this is for the first time load only to create the file
             # check if the device config file exists if not create it and write the device id to it
-            if not Path("device_config.txt").is_file():
-                with open("device_config.txt", "w") as f:
+            if not Path(deviceUrl).is_file():
+                with open(deviceUrl, "w") as f:
                     deviceID = str(uuid.uuid4())
                     f.write(deviceID)
                     f.close()
 
                     # insert device id into the device table
                     cursor = db.cursor()
-                    sql = "INSERT INTO device (device_id) VALUES (%s)"
-                    val = (deviceID,)
+                    sql = "INSERT INTO `enable_ninja_local`.device_x_user (device_id) VALUES (%s)"
+                    val = (deviceID)
                     cursor.execute(sql, val)
+                    db.commit()
             else:
                 # read the device id from the file
-                with open("device_config.txt", "r") as f:
+                with open(deviceUrl, "r") as f:
                     deviceID = f.read()
                     f.close()
 
             # query to check to see if the device id has an account associated with it
             cursor = db.cursor()
-            sql = "SELECT * FROM device WHERE device_id = %s"
-            val = (deviceID,)
+            sql = "SELECT * FROM `enable_ninja_local`.device_x_user WHERE DEVICE_ID = %s"
+            val = (deviceID)
             cursor.execute(sql, val)
             result = cursor.fetchone()
-            return jsonify(result)
+            return jsonify({"success": result})
         except Exception as e:
             print(e)
             return jsonify({"error": f"An error occurred in the index method with exception ({e})"})
@@ -97,4 +99,4 @@ def add_session():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

@@ -1,20 +1,24 @@
 <template>
   <v-app>
-    <v-layout> </v-layout>
+    <loading></loading>
+    <v-layout style="overflow:hidden !important" id="bg">
+      <home-track-selector></home-track-selector> </v-layout>
   </v-app>
 </template>
 
 <script>
+import HomeTrackSelector from '../components/home/home-track-selector.vue';
+import Loading from '../components/shared/loading.vue';
 export default {
-  name: "Home",
-  components: {},
+  title: "Home-Enable-Ninja",
+  components: {Loading, HomeTrackSelector},
   data() {
     return {};
   },
   created() {
     // call store method for index page that will check to see if the results contain an associated account
     // if not, it will redirect to a page that says to register the device 
-    await this.onCreated();
+    this.onCreated();
   },
   mounted() {},
   methods: {

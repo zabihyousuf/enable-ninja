@@ -1,8 +1,9 @@
 <template>
-  <v-app >
-   
-    <v-main >
-      <router-view />
+  <v-app id="bg">
+    <v-main>
+      <transition :name="animationName">
+        <router-view class="child-view" />
+      </transition>
     </v-main>
   </v-app>
 </template>
@@ -15,60 +16,45 @@ import { mapState } from "vuex";
 export default {
   name: "App",
   data: () => ({
-    drawer: false,
-    messages: 11,
-    show: false,
-    fab: false,
-    termsDialog: false,
-    privacyDialog: false,
-    links: ["Support", "Terms", "Privacy Policy"],
+    animationName: undefined,
   }),
   created() {
-    this.$vuetify.breakpoint.mdAndUp
-      ? (this.drawer = true)
-      : (this.drawer = false);
-    this.$vuetify.goTo(0);
+    console.log("App created");
   },
-  computed: {
-    moveIcons() {
-      var ret;
-      this.$vuetify.breakpoint.mdAndDown ? (ret = true) : (ret = false);
-      return ret;
-    },
-    //...mapState(["userProfile"]),
-    showNav() {
-      if (this.userProfile != null) {
-        var ret = Object.keys(this.userProfile).length > 1;
-        return ret;
-      }
-      return false;
-    },
-    topStyle() {
-      if (this.showNav) {
-        return "margin-top:-250px";
-      }
-      return "";
+  watch: {
+    $route(to, from) {
+      const to_depth = to.path.split("/").length;
+      const from_depth = from.path.split("/").length;
+      this.animationName = to_depth < from_depth ? "fade" : "fade";
     },
   },
-  methods: {
-    onScroll(e) {
-      if (typeof window === "undefined") return;
-      const top = window.pageYOffset || e.target.scrollTop || 0;
-      this.fab = top > 20;
-    },
-    toTop() {
-      this.$vuetify.goTo(0);
-    },
-    // logout() {
-    //   this.$store.dispatch("logout");
-    //   this.$vuetify.breakpoint.mdAndUp
-    //     ? (this.drawer = true)
-    //     : (this.drawer = false);
-    // },
-    getRouterName() {
-      return this.$route.name;
-    },
-  },
+  computed: {},
+  methods: {},
 };
 </script>
-
+<style scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+.child-view {
+  /* position: absolute;
+  width: 100%;
+  left: 0; */
+  /* transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1); */
+}
+/* .slide-left-enter,
+.slide-right-leave-active {
+  opacity: 0;
+  -webkit-transform: translate(30px, 0);
+  transform: translate(30px, 0);
+}
+.slide-left-leave-active,
+.slide-right-enter {
+  opacity: 0;
+  -webkit-transform: translate(-30px, 0);
+  transform: translate(-30px, 0);
+} */
+</style>

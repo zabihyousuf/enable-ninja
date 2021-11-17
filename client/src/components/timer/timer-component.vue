@@ -1,10 +1,17 @@
 <template>
   <v-row id="bg">
-    <v-col></v-col>
+
     <v-col>
+      <!-- back button that will go back to the page it came from  -->
+      <v-btn x-large icon @click="$router.go(-1)">
+        <v-icon color="white">mdi-arrow-left</v-icon>
+      </v-btn>
+    </v-col>
+    <v-col cols="8">
       <v-container fill-height fluid id="bg">
         <div id="clock">
           <v-row class="mb-n9" justify="center">
+            <v-spacer></v-spacer>
             <div class="mt-9">
               <v-card-title style="font-size: 18px">Fastest Lap</v-card-title>
               <v-card-text style="font-size: 24px"
@@ -25,6 +32,7 @@
                 ><strong>{{ averageLap }}</strong></v-card-text
               >
             </div>
+            <v-spacer></v-spacer>
           </v-row>
           <span class="time">{{ time }}</span>
 
@@ -74,14 +82,9 @@
 export default {
   name: "timer-component",
   props: {
-    longitude: {
-      type: Number,
-      default: 0,
-      required: false,
-    },
-    latitude: {
-      type: Number,
-      default: 0,
+    selectedTrack: {
+      type: String,
+      default: "",
       required: false,
     },
   },
@@ -120,7 +123,6 @@ export default {
       this.running = true;
     },
     stop() {
-      debugger;
       this.running = false;
       this.timeStopped = new Date();
       clearInterval(this.started);

@@ -10,7 +10,14 @@ Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(vuetify)
 Vue.config.productionTip = false;
-
+const DEFAULT_TITLE = 'Enable-Ninja-Repo';
+router.afterEach((to, from) => {
+    // Use next tick to handle router history correctly
+    // see: https://github.com/vuejs/vue-router/issues/914#issuecomment-384477609
+    Vue.nextTick(() => {
+        document.title = to.meta.title || DEFAULT_TITLE;
+    });
+});
 new Vue({
     router,
     vuetify,

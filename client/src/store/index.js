@@ -9,6 +9,8 @@ export default new Vuex.Store({
         apiUrl: 'http://localhost:5000/api/v1',
         currentSession: {},
         accountExists: false,
+        loading: false,
+        accountChecked: false,
     },
     mutations: {
         set(state, payload) {
@@ -19,10 +21,20 @@ export default new Vuex.Store({
         }
     },
     getters: {
+        get(state) {
+            return state;
+        },
+        getSesh(state) {
+            return state.sessions;
+        },
+        getAccountChecked(state) {
+            return state.accountChecked;
+        }
 
     },
     actions: {
-        async addSession({ commit, dispatch }, form) {
+        async addSession({ commit, dispatch, getters }, form) {
+            commit('set', ['loading', true]);
             axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
             axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
             var today = new Date();
@@ -45,25 +57,32 @@ export default new Vuex.Store({
                 .then(function(response) {
                     commit('set', ['sessions', []]);
                     console.log(response);
+                    commit('set', ['loading', false]);
                 })
                 .catch(function(error) {
                     console.log(error);
+                    commit('set', ['loading', false]);
                 });
         },
-        async checkForAccount({ commit, dispatch }) {
+        async checkForAccount({ commit, dispatch, getters }) {
+            commit('set', ['loading', true]);
             var path = `${this.state.apiUrl}/index`
-            axios.get(path)
-                .then(function(response) {
-                    console.log(response);
-                    if (response.data.success) {
-                        commit('set', ['accountExists', true]);
-                    }
-                    return accountExists;
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
-
+            if (getters.getAccountChecked == false) {
+                axios.get(path)
+                    .then(function(response) {
+                        console.log(response);
+                        if (response.data.success) {
+                            commit('set', ['accountExists', true]);
+                        }
+                        commit('set', ['accountChecked', true]);
+                        commit('set', ['loading', false]);
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                        commit('set', ['loading', false]);
+                    });
+            }
+            commit('set', ['loading', false]);
         }
     },
     modules: {}

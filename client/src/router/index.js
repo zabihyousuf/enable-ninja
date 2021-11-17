@@ -7,7 +7,7 @@ const routes = [{
         path: '/',
         name: 'Home',
         component: () =>
-            import ( /* webpackChunkName: "about" */ '../views/Home.vue'),
+            import ( /* webpackChunkName: "about" */ '../views/HomeView.vue'),
     },
     {
         path: '/about',
@@ -26,6 +26,9 @@ const routes = [{
         // which is lazy-loaded when the route is visited.
         component: () =>
             import ( /* webpackChunkName: "about" */ '../views/TimerView.vue'),
+        props: (route) => ({
+            ...route.params,
+        }),
     },
 ];
 
