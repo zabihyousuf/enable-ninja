@@ -8,27 +8,51 @@ import sys
 from pathlib import Path
 import uuid
 
+# initial app set up
 app = Flask(__name__)
-# db = pymysql.connect(host='localhost',
-#                      user='root',
-#                      password='Jubilant9828!',
-#                      db='enable_ninja_local')
+
+# local host db config
+localhostConfig = {
+    'host': 'localhost',
+    'user': 'root',
+    'password': 'Jubilant9828!',
+    'db': 'enable_ninja_local'
+}
+
+# main config for production
+mainConfig = {
+    'host': 'enable-ninja-main.cnecu7z7uv6q.us-east-1.rds.amazonaws.com',
+    'user': 'admin',
+    'password': 'password123',
+    'db': 'enable_ninja_local'
+}
+
+# main db connection
+# db = pymysql.connect(**mainConfig)
+
+# local db connection
+db = pymysql.connect(**localhostConfig)
 
 app = Flask(__name__)
 app.config.from_object(__name__)
+
+# device config api 
 deviceID = 0
 apiUrl = "/api/v1/"
 deviceUrl = "../device_config/device_config.txt"
+
 # enable CORS
 CORS(app, resources={r"/*": {"origins": "*"}})
-
-#  index method to create a file if it doesn't exist that will hold the device id
 
 
 @app.route(f'{apiUrl}index', methods=['GET'])
 def index():
+    """
+    This is the index page for the API.
+    :return:
+        success or error message
+    """
     global deviceID
-
     if request.method == 'GET':
         try:
             # this is for the first time load only to create the file
@@ -63,10 +87,15 @@ def index():
             return jsonify({"error": f"An error occurred in the index method with exception ({e})"})
 
 
-# sanity check route
+
 @app.route(f'{apiUrl}add-session', methods=['POST'])
 def add_session():
-    
+    """
+    This method is used to add a new session to the database
+
+    :return:
+        either a json object with the session id or an error message
+    """
     if request.method == 'POST':
         try:
             results = []

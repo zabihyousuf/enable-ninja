@@ -1,7 +1,10 @@
-- qr code tie device to user
+- qr code tie device to user (DONE KINDA)
     - they can use a qr code which will have an id tied to the device 
     - when they scan the code they will then make an account 
     - how will the app know who is logged in?
         - each device will have a file to let them know what is the device id
         - when we make the qr codes, they will be generated from those files and then the link will be associated with the device id
-        - it would only be in the db table if its associated with an account
+        - it would only be in the db table if its associated with an account\
+- connect to Aws db 
+- save sessions locally after ending it and then on app load it will run to see if any lines exist in if so itll upload it to the db if not itll continue 
+ 
