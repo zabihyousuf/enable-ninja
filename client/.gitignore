@@ -1,2 +1,4 @@
 node_modules
 .editorconfig
+#Electron-builder output
+/dist_electron
