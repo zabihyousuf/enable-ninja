@@ -7,7 +7,7 @@ import logging
 import sys
 from pathlib import Path
 import uuid
-
+import os 
 # initial app set up
 app = Flask(__name__)
 
@@ -36,10 +36,18 @@ db = pymysql.connect(**localhostConfig)
 app = Flask(__name__)
 app.config.from_object(__name__)
 
+
 # device config api 
 deviceID = 0
 apiUrl = "/api/v1/"
+
+
+# get device_config.txt file path
+path = os.getcwd()
+name = "device_config.txt"
+
 deviceUrl = "../device_config/device_config.txt"
+
 
 # enable CORS
 CORS(app, resources={r"/*": {"origins": "*"}})

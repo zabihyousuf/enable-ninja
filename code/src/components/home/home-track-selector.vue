@@ -4,7 +4,7 @@
       <v-row></v-row>
       <v-row></v-row>
       <v-row></v-row>
-      <v-row class="mb-n9">
+      <v-row class="mb-n4 ml-n9">
         <v-card-title style="font-size: 72px; color: white"
           >SELECT TRACK</v-card-title
         >
