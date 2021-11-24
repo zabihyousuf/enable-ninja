@@ -26,3 +26,4 @@ new Vue({
 }).$mount('#app');
 
 require('./assets/scss/app.scss')
+require('fs')

@@ -3,7 +3,8 @@
     <v-col>
       <!-- back button that will go back to the page it came from  -->
       <v-btn class="pl-9" x-large icon @click="$router.go(-1)">
-        <v-icon color="white">mdi-arrow-left</v-icon> <v-card-title class="ml-n3" style="color:white">Back</v-card-title>
+        <v-icon color="white">mdi-arrow-left</v-icon>
+        <v-card-title class="ml-n3" style="color: white">Back</v-card-title>
       </v-btn>
     </v-col>
     <v-col cols="8">
@@ -11,7 +12,12 @@
         <div id="clock">
           <v-row class="mb-n9" justify="center">
             <div class="mt-9 mr-9">
-              <v-card-title id="app_text" class="mt-9 mb-9" style="font-size: 42px">Fastest Lap</v-card-title>
+              <v-card-title
+                id="app_text"
+                class="mt-9 mb-9"
+                style="font-size: 42px"
+                >Fastest Lap</v-card-title
+              >
               <v-card-text style="font-size: 54px"
                 ><strong>{{ fastestLap }}</strong></v-card-text
               >
@@ -19,7 +25,7 @@
             <v-spacer></v-spacer>
             <v-spacer></v-spacer>
             <div>
-              <span id="app_text"  style="font-size: 42px">Lap </span
+              <span id="app_text" style="font-size: 42px">Lap </span
               ><span style="font-size: 9em">
                 <strong>{{ lapNumber }}</strong></span
               >
@@ -27,7 +33,12 @@
             <v-spacer></v-spacer>
             <v-spacer></v-spacer>
             <div class="mt-9 ml-9">
-              <v-card-title id="app_text"  class="mt-9 mb-9" style="font-size: 42px">Average Lap</v-card-title>
+              <v-card-title
+                id="app_text"
+                class="mt-9 mb-9"
+                style="font-size: 42px"
+                >Average Lap</v-card-title
+              >
               <v-card-text style="font-size: 54px"
                 ><strong>{{ averageLap }}</strong></v-card-text
               >
@@ -48,7 +59,7 @@
               >Start Session</v-btn
             >
             <v-spacer></v-spacer>
-            <!-- <v-btn
+            <v-btn
               light
               x-large
               style="font-size: 4em"
@@ -58,7 +69,7 @@
               class="white--text"
               @click="lap()"
               >Lap</v-btn
-            > -->
+            >
 
             <v-spacer v-if="running"></v-spacer>
             <v-btn
@@ -81,7 +92,7 @@
     <v-col> </v-col>
     <v-col> </v-col>
     <v-col> </v-col>
-    <v-col> </v-col>  
+    <v-col> </v-col>
     <v-col> </v-col>
     <v-col> </v-col>
     <v-col> </v-col>
@@ -131,6 +142,10 @@ export default {
 
       this.started = setInterval(this.clockRunning, 10);
       this.running = true;
+
+      if(this.running === true){
+        event.preventDefault();
+      }
     },
     stop() {
       this.running = false;
@@ -139,6 +154,14 @@ export default {
     },
     reset(calledFrom) {
       if (calledFrom === "end") {
+        if (this.lapNumber == 1) {
+          this.laps.push({
+            time: this.time,
+            lap: this.lapNumber,
+            timeDiff: this.timeElapsed.getTime(),
+          });
+          this.calcAvgAndFastest();
+        }
         this.$store.dispatch("addSession", {
           laps: this.laps,
           fastestLap: this.fastestLap,

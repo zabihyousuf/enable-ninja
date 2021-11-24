@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import fs from 'fs'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -50,6 +51,25 @@ export default new Vuex.Store({
                 avgLap: form.avgLap,
             }
             commit('addSesh', tempSesh);
+
+            // saves the session locally before sending it to the db 
+            // const fsCheck = require('fs');
+
+            // Data which will write in a file.
+            let data = JSON.stringify(getters.getSesh);
+
+            var file = '~/logs/sessions.txt'
+            if (fs.existsSync(file)) {
+                fs.appendFile(file, data, function(err) {
+                    if (err) throw err;
+                    console.log('Appended!');
+                });
+            } else {
+                fs.writeFile(file, data, function(err) {
+                    if (err) throw err;
+                    console.log('Saved!');
+                });
+            }
             var path = `${this.state.apiUrl}/add-session`
                 // var bodyFormData = new FormData();
                 // bodyFormData.append('form', this.state.sessions);
