@@ -1,102 +1,118 @@
-<template>
-  <v-row id="bg">
-    <v-col>
+<template style="background-color: rgb(10, 10, 10)">
+  <v-container id="bg">
+    
+    <!-- top row -->
+    <v-row>
+      
+      <v-row>
+        <v-col cols='4'
+          ><v-btn
+            class="ml-14 mt-14"
+            x-large
+            icon
+            @click="$router.replace('/')"
+          >
+            <v-icon color="white">mdi-arrow-left</v-icon>
+            <v-card-title class="ml-n3" style="color: white">Back</v-card-title>
+          </v-btn></v-col
+        >
+        <v-col cols='4' justify='center' class="mb-n14" v-if="this.getError"
+        ><v-alert
+          outlined
+          type="error"
+          prominent
+          border="left"
+          class="mt-9 mb-n9"
+        >
+          An error has occurred. Please close the app and try again.
+        </v-alert></v-col
+      >
+      </v-row>
       <!-- back button that will go back to the page it came from  -->
-      <v-btn class="pl-9" x-large icon @click="$router.go(-1)">
-        <v-icon color="white">mdi-arrow-left</v-icon>
-        <v-card-title class="ml-n3" style="color: white">Back</v-card-title>
-      </v-btn>
-    </v-col>
-    <v-col cols="8">
-      <v-container fill-height fluid id="bg">
-        <div id="clock">
-          <v-row class="mb-n9" justify="center">
-            <div class="mt-9 mr-9">
-              <v-card-title
-                id="app_text"
-                class="mt-9 mb-9"
-                style="font-size: 42px"
-                >Fastest Lap</v-card-title
-              >
-              <v-card-text style="font-size: 54px"
-                ><strong>{{ fastestLap }}</strong></v-card-text
-              >
-            </div>
-            <v-spacer></v-spacer>
-            <v-spacer></v-spacer>
-            <div>
-              <span id="app_text" style="font-size: 42px">Lap </span
-              ><span style="font-size: 9em">
-                <strong>{{ lapNumber }}</strong></span
-              >
-            </div>
-            <v-spacer></v-spacer>
-            <v-spacer></v-spacer>
-            <div class="mt-9 ml-9">
-              <v-card-title
-                id="app_text"
-                class="mt-9 mb-9"
-                style="font-size: 42px"
-                >Average Lap</v-card-title
-              >
-              <v-card-text style="font-size: 54px"
-                ><strong>{{ averageLap }}</strong></v-card-text
-              >
-            </div>
-          </v-row>
-          <span class="time">{{ time }}</span>
+    </v-row>
+    <v-row justify="center">
+      <v-col cols="12">
+        <v-container class="ml-15 mt-9" fill-height fluid id="bg">
+          <div id="clock">
+            <v-row class="mb-n9" justify="center">
+              <div class="mt-9 mr-9">
+                <v-card-title
+                  id="app_text"
+                  class="mt-9 mb-9"
+                  style="font-size: 42px"
+                  >Fastest Lap</v-card-title
+                >
+                <v-card-text style="font-size: 54px"
+                  ><strong>{{ fastestLap }}</strong></v-card-text
+                >
+              </div>
+              <v-spacer></v-spacer>
+              <v-spacer></v-spacer>
+              <div>
+                <span id="app_text" style="font-size: 42px">Lap </span
+                ><span style="font-size: 9em">
+                  <strong>{{ lapNumber }}</strong></span
+                >
+              </div>
+              <v-spacer></v-spacer>
+              <v-spacer></v-spacer>
+              <div class="mt-9 ml-9">
+                <v-card-title
+                  id="app_text"
+                  class="mt-9 mb-9"
+                  style="font-size: 42px"
+                  >Average Lap</v-card-title
+                >
+                <v-card-text style="font-size: 54px"
+                  ><strong>{{ averageLap }}</strong></v-card-text
+                >
+              </div>
+            </v-row>
+            <span class="time">{{ time }}</span>
 
-          <v-row justify="center">
-            <v-spacer></v-spacer>
-            <v-btn
-              x-large
-              style="font-size: 4em"
-              id="start"
-              text
-              color="success"
-              class="white--text"
-              @click="start()"
-              >Start Session</v-btn
-            >
-            <v-spacer></v-spacer>
-            <v-btn
-              light
-              x-large
-              style="font-size: 4em"
-              v-if="running"
-              id="stop"
-              text
-              class="white--text"
-              @click="lap()"
-              >Lap</v-btn
-            >
+            <v-row justify="center">
+              <v-spacer></v-spacer>
+              <v-btn
+                x-large
+                style="font-size: 4em"
+                id="start"
+                text
+                color="success"
+                class="white--text"
+                @click="start()"
+                >Start Session</v-btn
+              >
+              <v-spacer></v-spacer>
+              <v-btn
+                light
+                x-large
+                style="font-size: 4em"
+                v-if="running"
+                id="stop"
+                text
+                class="white--text"
+                @click="lap()"
+                >Lap</v-btn
+              >
 
-            <v-spacer v-if="running"></v-spacer>
-            <v-btn
-              v-if="running"
-              x-large
-              style="font-size: 4em"
-              id="reset"
-              color="error"
-              text
-              class="white--text"
-              @click="reset('end')"
-              >End Session</v-btn
-            >
-            <v-spacer v-if="running"></v-spacer>
-          </v-row>
-        </div> </v-container
-    ></v-col>
-    <v-col> </v-col>
-    <v-col> </v-col>
-    <v-col> </v-col>
-    <v-col> </v-col>
-    <v-col> </v-col>
-    <v-col> </v-col>
-    <v-col> </v-col>
-    <v-col> </v-col>
-    <v-col> </v-col>
-  </v-row>
+              <v-spacer v-if="running"></v-spacer>
+              <v-btn
+                v-if="running"
+                x-large
+                style="font-size: 4em"
+                id="reset"
+                color="error"
+                text
+                class="white--text"
+                @click="reset('end')"
+                >End Session</v-btn
+              >
+              <v-spacer v-if="running"></v-spacer>
+            </v-row>
+          </div> </v-container
+      ></v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -127,6 +143,11 @@ export default {
       timeElapsed: 0,
     };
   },
+  computed: {
+    getError() {
+      return this.$store.state.errorOnPage;
+    },
+  },
   methods: {
     start() {
       if (this.running) return;
@@ -143,7 +164,7 @@ export default {
       this.started = setInterval(this.clockRunning, 10);
       this.running = true;
 
-      if(this.running === true){
+      if (this.running === true) {
         event.preventDefault();
       }
     },
@@ -209,10 +230,6 @@ export default {
       return (zero + num).slice(-digit);
     },
     lap() {
-      const tempDate = new Date(
-        new Date() - this.timeBegan - this.stoppedDuration
-      ).getTime();
-
       this.laps.push({
         time: this.time,
         lap: this.lapNumber,
@@ -239,8 +256,8 @@ export default {
     msToTime(duration) {
       var milliseconds = parseInt(duration % 1000),
         seconds = parseInt((duration / 1000) % 60),
-        minutes = parseInt((duration / (1000 * 60)) % 60),
-        minutes = minutes < 10 ? "0" + minutes : minutes;
+        tempMinutes = parseInt((duration / (1000 * 60)) % 60),
+        minutes = tempMinutes < 10 ? "0" + tempMinutes : tempMinutes;
       seconds = seconds < 10 ? "0" + seconds : seconds;
 
       return minutes + ":" + seconds + "." + milliseconds;

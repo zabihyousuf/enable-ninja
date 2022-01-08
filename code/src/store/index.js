@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
-import fs from 'fs'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -12,6 +11,7 @@ export default new Vuex.Store({
         accountExists: false,
         loading: false,
         accountChecked: false,
+        errorOnPage: false,
     },
     mutations: {
         set(state, payload) {
@@ -34,8 +34,9 @@ export default new Vuex.Store({
 
     },
     actions: {
-        async addSession({ commit, dispatch, getters }, form) {
+        async addSession({ commit, }, form) {
             commit('set', ['loading', true]);
+            commit('set', ['errorOnPage', false]);
             axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
             axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
             var today = new Date();
@@ -56,20 +57,20 @@ export default new Vuex.Store({
             // const fsCheck = require('fs');
 
             // Data which will write in a file.
-            let data = JSON.stringify(getters.getSesh);
+            // let data = JSON.stringify(getters.getSesh);
 
-            var file = '~/logs/sessions.txt'
-            if (fs.existsSync(file)) {
-                fs.appendFile(file, data, function(err) {
-                    if (err) throw err;
-                    console.log('Appended!');
-                });
-            } else {
-                fs.writeFile(file, data, function(err) {
-                    if (err) throw err;
-                    console.log('Saved!');
-                });
-            }
+            // var file = '~/logs/sessions.txt'
+            // if (fs.existsSync(file)) {
+            //     fs.appendFile(file, data, function(err) {
+            //         if (err) throw err;
+            //         console.log('Appended!');
+            //     });
+            // } else {
+            //     fs.writeFile(file, data, function(err) {
+            //         if (err) throw err;
+            //         console.log('Saved!');
+            //     });
+            // }
             var path = `${this.state.apiUrl}/add-session`
                 // var bodyFormData = new FormData();
                 // bodyFormData.append('form', this.state.sessions);
@@ -81,11 +82,13 @@ export default new Vuex.Store({
                 })
                 .catch(function(error) {
                     console.log(error);
+                    commit('set', ['errorOnPage', true]);
                     commit('set', ['loading', false]);
                 });
         },
-        async checkForAccount({ commit, dispatch, getters }) {
+        async checkForAccount({ commit, getters }) {
             commit('set', ['loading', true]);
+            commit('set', ['errorOnPage', false]);
             var path = `${this.state.apiUrl}/index`
             if (getters.getAccountChecked == false) {
                 axios.get(path)
@@ -99,6 +102,7 @@ export default new Vuex.Store({
                     })
                     .catch(function(error) {
                         console.log(error);
+                        commit('set', ['errorOnPage', true]);
                         commit('set', ['loading', false]);
                     });
             }

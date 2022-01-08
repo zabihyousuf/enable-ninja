@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center">
     <v-container fill-height fill-width>
-      <v-row></v-row>
+
       <v-row></v-row>
       <v-row></v-row>
       <v-row class="mb-n4 ml-n9">
@@ -51,6 +51,11 @@ export default {
         { trackName: "NJ RACE BIKE", startLong: "", startLat: "", trackID: 4 },
       ],
     };
+  },
+  computed: {
+    getError() {
+      return this.$store.state.errorOnPage;
+    },
   },
   methods: {
     goToTimer() {

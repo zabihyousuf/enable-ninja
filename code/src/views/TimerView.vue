@@ -19,6 +19,10 @@ export default {
 
     };
   },
+  created(){
+    console.log("Timer created");
+
+  },
   methods: {
   },
 };

@@ -1,5 +1,8 @@
+from datetime import time
 import logging
 from flask import Flask, jsonify, request
+import time
+from multiprocessing import Process, Value
 from flask_cors import CORS
 from flaskext.mysql import MySQL
 import pymysql
@@ -27,6 +30,7 @@ mainConfig = {
     'db': 'enable_ninja_local'
 }
 
+finaList = []
 # main db connection
 # db = pymysql.connect(**mainConfig)
 
@@ -46,7 +50,7 @@ apiUrl = "/api/v1/"
 path = os.getcwd()
 name = "device_config.txt"
 
-deviceUrl = "../device_config/device_config.txt"
+deviceUrl = "device_config.txt"
 
 
 # enable CORS
@@ -60,6 +64,9 @@ def index():
     :return:
         success or error message
     """
+    recording_on = Value('b', True)
+    p = Process(target=record_loop, args=(recording_on,))
+    p.start()  
     global deviceID
     if request.method == 'GET':
         try:
@@ -89,7 +96,7 @@ def index():
             val = (deviceID)
             cursor.execute(sql, val)
             result = cursor.fetchone()
-            return jsonify({"success": result})
+            return jsonify(result)
         except Exception as e:
             print(e)
             return jsonify({"error": f"An error occurred in the index method with exception ({e})"})
@@ -112,8 +119,8 @@ def add_session():
             for i in form:
                 # insert data in database
                 cursor.execute(
-                    "INSERT INTO `enable_ninja_local`.track_session (created_date, average_lap, fastest_lap) VALUES (%s, %s, %s)",
-                    (i['sessionDate'], i['avgLap'], i['fastestLap']))
+                    "INSERT INTO `enable_ninja_local`.track_session (created_date, average_lap, fastest_lap, device_id) VALUES (%s, %s, %s, %s)",
+                    (i['sessionDate'], i['avgLap'], i['fastestLap'], deviceID))
                 db.commit()
 
                 # get last inserted id
@@ -134,6 +141,14 @@ def add_session():
             print(e)
             return jsonify({"error": ("An error occurred in the add_session method with exception (%s)", e)})
 
+def record_loop(loop_on):
+    global finaList
+    while True:
+        if loop_on.value == True:
+            finaList.append(time.time())
+            print(finaList)
+        time.sleep(.5)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    
+    app.run()
