@@ -1,8 +1,6 @@
 <template>
   <v-app>
-    <v-layout>
       <timer-component  id="bg" ></timer-component>
-    </v-layout>
 
   </v-app>
 </template>
@@ -21,9 +19,12 @@ export default {
   },
   created(){
     console.log("Timer created");
-
+    this.onTimerCreated();
   },
   methods: {
+    async onTimerCreated(){
+      this.$store.dispatch("getRaceTrack");
+    },
   },
 };
 </script>

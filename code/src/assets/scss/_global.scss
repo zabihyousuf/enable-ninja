@@ -26,11 +26,11 @@ body {}
     font-family: 'Share Tech Mono', monospace;
     background-color: rgb(10, 10, 10) !important;
     order: 0;
-    align-self: center;
+    // align-self: center;
     color: $color;
     //text-shadow: 0px 0px 25px $color;
     .time {
-        font-size: 23em;
+        font-size: 20vw;
     }
     .text {
         margin-top: 30px;

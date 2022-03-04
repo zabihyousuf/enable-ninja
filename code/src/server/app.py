@@ -1,3 +1,4 @@
+from crypt import methods
 from datetime import time
 import logging
 from flask import Flask, jsonify, request
@@ -26,16 +27,16 @@ localhostConfig = {
 mainConfig = {
     'host': 'enable-ninja-main.cnecu7z7uv6q.us-east-1.rds.amazonaws.com',
     'user': 'admin',
-    'password': 'password123',
+    'password': 'Jubilant3554',
     'db': 'enable_ninja_local'
 }
 
 finaList = []
 # main db connection
-# db = pymysql.connect(**mainConfig)
+db = pymysql.connect(**mainConfig)
 
 # local db connection
-db = pymysql.connect(**localhostConfig)
+# db = pymysql.connect(**localhostConfig)
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -43,7 +44,7 @@ app.config.from_object(__name__)
 
 # device config api 
 deviceID = 0
-apiUrl = "/api/v1/"
+apiUrl = "/api/v1"
 
 
 # get device_config.txt file path
@@ -57,16 +58,16 @@ deviceUrl = "device_config.txt"
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 
-@app.route(f'{apiUrl}index', methods=['GET'])
-def index():
+@app.route(f'{apiUrl}/checkForAccount', methods=['GET'])
+def checkForAccount():
     """
     This is the index page for the API.
     :return:
         success or error message
     """
-    recording_on = Value('b', True)
-    p = Process(target=record_loop, args=(recording_on,))
-    p.start()  
+    # recording_on = Value('b', True)
+    # p = Process(target=record_loop, args=(recording_on,))
+    # p.start()  
     global deviceID
     if request.method == 'GET':
         try:
@@ -101,9 +102,23 @@ def index():
             print(e)
             return jsonify({"error": f"An error occurred in the index method with exception ({e})"})
 
+@app.route(f'{apiUrl}/getWifiNames', methods=['GET'])
+def getWifiNames():
+    """
+    returns a list of available wifi networks you can connect to
+    :return:
+        success or error message
+    """ 
+    if request.method == 'GET':
+        try:
 
+            wifiNames = ['name 1', 'name 2', 'name 3']
+            return jsonify({"success":wifiNames})
+        except Exception as e:
+            print(e)
+            return jsonify({"error": f"An error occurred in the index method with exception ({e})"})
 
-@app.route(f'{apiUrl}add-session', methods=['POST'])
+@app.route(f'{apiUrl}/add-session', methods=['POST'])
 def add_session():
     """
     This method is used to add a new session to the database
@@ -141,6 +156,46 @@ def add_session():
             print(e)
             return jsonify({"error": ("An error occurred in the add_session method with exception (%s)", e)})
 
+@app.route(f'{apiUrl}/connectToWifi', methods=['POST'])
+def connectToWifi():
+    """
+    returns a list of available wifi networks you can connect to
+    :return:
+        success or error message
+    """ 
+    if request.method == 'POST':
+        try:
+
+            form = request.get_json(silent=True).get('form')
+            network = form['network']
+            passwords = form['password']
+            return jsonify({"success"})
+        except Exception as e:
+            print(e)
+            return jsonify({"error": f"An error occurred in the index method with exception ({e})"})
+
+@app.route(f'{apiUrl}/getRaceTrack', methods=['GET'])
+def getRaceTrack():
+    """
+   checks to see closest track to the device
+    :return:
+        success or error message
+    """ 
+    if request.method == 'GET':
+        try:
+
+            currPos = [39.235194, -77.969056]
+            cursor = db.cursor()
+            sql = "SELECT * FROM `enable_ninja_local`.tracks"
+            cursor.execute(sql)
+            result = cursor.fetchall()
+
+            print('This is error output ' + result, file=sys.stderr)
+            return jsonify({"success"})
+        except Exception as e:
+            print(e)
+            return jsonify({"error": f"An error occurred in the index method with exception ({e})"})
+
 def record_loop(loop_on):
     global finaList
     while True:
@@ -148,7 +203,7 @@ def record_loop(loop_on):
             finaList.append(time.time())
             print(finaList)
         time.sleep(.5)
+    
 
 if __name__ == '__main__':
-    
     app.run()

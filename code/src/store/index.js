@@ -12,6 +12,11 @@ export default new Vuex.Store({
         loading: false,
         accountChecked: false,
         errorOnPage: false,
+        getWifiNames: [],
+        trackLatitude: 0,
+        trackLongitude: 0,
+        trackName: '',
+
     },
     mutations: {
         set(state, payload) {
@@ -52,25 +57,6 @@ export default new Vuex.Store({
                 avgLap: form.avgLap,
             }
             commit('addSesh', tempSesh);
-
-            // saves the session locally before sending it to the db 
-            // const fsCheck = require('fs');
-
-            // Data which will write in a file.
-            // let data = JSON.stringify(getters.getSesh);
-
-            // var file = '~/logs/sessions.txt'
-            // if (fs.existsSync(file)) {
-            //     fs.appendFile(file, data, function(err) {
-            //         if (err) throw err;
-            //         console.log('Appended!');
-            //     });
-            // } else {
-            //     fs.writeFile(file, data, function(err) {
-            //         if (err) throw err;
-            //         console.log('Saved!');
-            //     });
-            // }
             var path = `${this.state.apiUrl}/add-session`
                 // var bodyFormData = new FormData();
                 // bodyFormData.append('form', this.state.sessions);
@@ -89,7 +75,7 @@ export default new Vuex.Store({
         async checkForAccount({ commit, getters }) {
             commit('set', ['loading', true]);
             commit('set', ['errorOnPage', false]);
-            var path = `${this.state.apiUrl}/index`
+            var path = `${this.state.apiUrl}/checkForAccount`
             if (getters.getAccountChecked == false) {
                 axios.get(path)
                     .then(function(response) {
@@ -98,14 +84,48 @@ export default new Vuex.Store({
                             commit('set', ['accountExists', true]);
                         }
                         commit('set', ['accountChecked', true]);
-                        commit('set', ['loading', false]);
                     })
                     .catch(function(error) {
                         console.log(error);
                         commit('set', ['errorOnPage', true]);
-                        commit('set', ['loading', false]);
                     });
             }
+            commit('set', ['loading', false]);
+        },
+        async wifiConnection({ commit, getters }) {
+            commit('set', ['loading', true]);
+            commit('set', ['errorOnPage', false]);
+            var path = `${this.state.apiUrl}/getWifiNames`
+            if (getters.getAccountChecked == false) {
+                axios.get(path)
+                    .then(function(response) {
+                        console.log(response);
+                        commit('set', ['getWifiNames', []]);
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                        commit('set', ['errorOnPage', true]);
+                    });
+            }
+            commit('set', ['loading', false]);
+        },
+        async getRaceTrack({ commit }) {
+            commit('set', ['loading', true]);
+            commit('set', ['errorOnPage', false]);
+            var path = `${this.state.apiUrl}/getRaceTrack`
+
+            axios.get(path)
+                .then(function(response) {
+                    console.log(response);
+                    commit('set', ['trackLatitude', response.data.latitude]);
+                    commit('set', ['trackLongitude', response.data.longitude]);
+                    commit('set', ['trackName', response.data.name]);
+                })
+                .catch(function(error) {
+                    console.log(error);
+                    commit('set', ['errorOnPage', true]);
+                });
+
             commit('set', ['loading', false]);
         }
     },

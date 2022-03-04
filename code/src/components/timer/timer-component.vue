@@ -1,76 +1,68 @@
 <template style="background-color: rgb(10, 10, 10)">
-  <v-container id="bg">
-    
+  <v-app>
     <!-- top row -->
-    <v-row>
-      
+    <v-container fluid>
       <v-row>
-        <v-col cols='4'
-          ><v-btn
-            class="ml-14 mt-14"
-            x-large
-            icon
-            @click="$router.replace('/')"
+        <v-row>
+          <v-col cols="4"
+            ><v-btn
+              class="ml-14 mt-14"
+              x-large
+              icon
+              @click="$router.replace('/')"
+            >
+              <v-icon color="white">mdi-arrow-left</v-icon>
+              <v-card-title class="ml-n3" style="color: white"
+                >Back</v-card-title
+              >
+            </v-btn></v-col
           >
-            <v-icon color="white">mdi-arrow-left</v-icon>
-            <v-card-title class="ml-n3" style="color: white">Back</v-card-title>
-          </v-btn></v-col
-        >
-        <v-col cols='4' justify='center' class="mb-n14" v-if="this.getError"
-        ><v-alert
-          outlined
-          type="error"
-          prominent
-          border="left"
-          class="mt-9 mb-n9"
-        >
-          An error has occurred. Please close the app and try again.
-        </v-alert></v-col
-      >
+          <v-col cols="4" justify="center" class="mb-n14" v-if="this.getError"
+            ><v-alert
+              outlined
+              type="error"
+              prominent
+              border="left"
+              class="mt-9 mb-n9"
+            >
+              An error has occurred. Please close the app and try again.
+            </v-alert></v-col
+          >
+        </v-row>
+        <!-- back button that will go back to the page it came from  -->
       </v-row>
-      <!-- back button that will go back to the page it came from  -->
-    </v-row>
-    <v-row justify="center">
-      <v-col cols="12">
-        <v-container class="ml-15 mt-9" fill-height fluid id="bg">
-          <div id="clock">
-            <v-row class="mb-n9" justify="center">
-              <div class="mt-9 mr-9">
-                <v-card-title
-                  id="app_text"
-                  class="mt-9 mb-9"
-                  style="font-size: 42px"
-                  >Fastest Lap</v-card-title
-                >
-                <v-card-text style="font-size: 54px"
-                  ><strong>{{ fastestLap }}</strong></v-card-text
-                >
-              </div>
-              <v-spacer></v-spacer>
-              <v-spacer></v-spacer>
-              <div>
-                <span id="app_text" style="font-size: 42px">Lap </span
-                ><span style="font-size: 9em">
-                  <strong>{{ lapNumber }}</strong></span
-                >
-              </div>
-              <v-spacer></v-spacer>
-              <v-spacer></v-spacer>
-              <div class="mt-9 ml-9">
-                <v-card-title
-                  id="app_text"
-                  class="mt-9 mb-9"
-                  style="font-size: 42px"
-                  >Average Lap</v-card-title
-                >
-                <v-card-text style="font-size: 54px"
-                  ><strong>{{ averageLap }}</strong></v-card-text
-                >
-              </div>
-            </v-row>
-            <span class="time">{{ time }}</span>
-
-            <v-row justify="center">
+      <div id="clock">
+      <v-row class="mt-9 mb-n13" align="center">
+        <v-col cols="4" align="center">
+          <v-row
+            ><v-card-text id="app_text" style="font-size: 42px"
+              >Fastest Lap</v-card-text
+            >
+            <v-card-text style="font-size: 54px"
+              ><strong>{{ fastestLap }}</strong></v-card-text
+            ></v-row
+          >
+        </v-col>
+        <v-col align="center" cols="4">
+          <span id="app_text" style="font-size: 42px">Lap </span
+          ><span style="font-size: 9em">
+            <strong>{{ lapNumber }}</strong></span
+          >
+        </v-col>
+        <v-col align="center" cols="4">
+          <v-row
+            ><v-card-text id="app_text" style="font-size: 42px"
+              >Average Lap</v-card-text
+            >
+            <v-card-text style="font-size: 54px"
+              ><strong>{{ averageLap }}</strong></v-card-text
+            ></v-row
+          >
+        </v-col>
+      </v-row>
+      <v-row align="center"><v-col align="center"><span class="time">{{ time }}</span></v-col></v-row>
+      <v-row>
+        <v-row justify="center">
               <v-spacer></v-spacer>
               <v-btn
                 x-large
@@ -109,10 +101,16 @@
               >
               <v-spacer v-if="running"></v-spacer>
             </v-row>
-          </div> </v-container
-      ></v-col>
-    </v-row>
-  </v-container>
+      </v-row>
+      </div>
+      
+      <!-- <v-row>
+                 
+
+            <
+    </v-row> -->
+    </v-container>
+  </v-app>
 </template>
 
 <script>
